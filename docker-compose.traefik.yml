@@ -1,0 +1,17 @@
+version: '3'
+services:
+    traefik:
+        image: traefik:v2.2
+        networks:
+            - webgateway
+        command: --api.insecure=true --providers.docker --entrypoints.HTTP.address=":80" --entrypoints.node-app.address=":3010"
+        ports:
+            - "80:80"
+            - "3010:3010"
+            - "8080:8080"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+    webgateway:
+        driver: bridge

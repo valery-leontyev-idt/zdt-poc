@@ -1,0 +1,18 @@
+version: '3'
+services:
+    node-app:
+        build: ./node-app
+        networks:
+            - traefik
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.node-app.loadbalancer.healthcheck.path=/health"
+            - "traefik.http.services.node-app.loadbalancer.healthcheck.interval=1s"
+            - "traefik.http.services.node-app.loadbalancer.server.port=3000"
+            - "traefik.http.routers.node-app.rule=HostRegexp(`{host:.*}`)"
+            - "traefik.http.routers.node-app.entryPoints=node-app"
+
+networks:
+    traefik:
+        external:
+            name: traefik_webgateway
